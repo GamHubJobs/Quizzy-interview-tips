@@ -1,0 +1,498 @@
+* {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* ============ SHARED SCREEN WRAPPER ============ */
+        .screen {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #006400, #228B22, #3CB371, #20B2AA, #4682B4, #000080);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* ============ SHARED ANIMATIONS ============ */
+        @keyframes subtle-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.5); }
+            100% { box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); }
+        }
+
+        @keyframes highlight-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); }
+            to { text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 255, 255, 0.5); }
+        }
+
+        @keyframes fade-in-up {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes reveal-pop {
+            0% { transform: scale(0.8); }
+            55% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes reveal-flash {
+            0% { opacity: 0.85; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes reveal-glow {
+            0%, 100% { box-shadow: 0 0 0px rgba(255, 204, 0, 0); }
+            40% { box-shadow: 0 0 30px rgba(255, 204, 0, 0.85); }
+        }
+
+        /* ============ SHARED TIKTOK BANNER ============ */
+        .tiktok-banner {
+            position: absolute;
+            top: 12px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 6px 10px;
+            z-index: 10;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: subtle-pulse 3s ease-in-out infinite;
+        }
+
+        .tiktok-logo {
+            width: 18px;
+            height: 18px;
+            margin-right: 6px;
+            flex-shrink: 0;
+            opacity: 0.8;
+        }
+
+        .tiktok-text {
+            font-weight: bold;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            opacity: 0.8;
+        }
+
+        /* ============ SHARED "PROMO CARD" (opening + share screens) ============ */
+        #opening-screen .promo-card,
+        #share-screen .promo-card {
+            width: 90%;
+            margin: 20px auto;
+            background-color: rgba(20, 50, 80, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            animation: pulse-animation 3s infinite;
+        }
+
+        #opening-screen .promo-text,
+        #share-screen .promo-text {
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            line-height: 1.4;
+            margin-bottom: 18px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s, transform 1s;
+        }
+
+        #opening-screen .promo-text { font-size: 2.1rem; }
+        #share-screen .promo-text { font-size: 1.75rem; }
+
+        #opening-screen .promo-text.visible,
+        #share-screen .promo-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .highlight {
+            color: #ffcc00;
+            display: inline-block;
+            animation: highlight-pulse 2s infinite;
+        }
+
+        .topic-badge {
+            display: inline-block;
+            border-radius: 8px;
+            padding: 6px 14px;
+            margin: 0 4px;
+            font-size: 1.3rem;
+        }
+
+        .badge-cv {
+            background-color: rgba(255, 204, 0, 0.3);
+            border: 2px solid #ffcc00;
+        }
+
+        .badge-interview {
+            background-color: rgba(70, 130, 180, 0.35);
+            border: 2px solid #4682B4;
+        }
+
+        .promo-content {
+            position: relative;
+        }
+
+        .brand-line {
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        /* ============ ICON PANEL (opening + share screens) ============ */
+        .icon-row {
+            width: 100%;
+            height: 150px;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+        }
+
+        .icon-panel-cv {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(160deg, rgba(255, 204, 0, 0.35), rgba(20, 50, 80, 0.6));
+        }
+
+        .icon-panel-interview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(160deg, rgba(70, 130, 180, 0.4), rgba(20, 50, 80, 0.6));
+        }
+
+        .icon-emoji {
+            font-size: 2.6rem;
+        }
+
+        .icon-label {
+            font-weight: bold;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        /* ============ CONTENT SCREEN (CV TIPS) ============ */
+        #content-screen .progress-badge {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.15rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            text-align: center;
+            min-width: 150px;
+            color: #fff;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        #content-screen .type-tag {
+            display: block;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            opacity: 0.85;
+            margin-top: 2px;
+        }
+
+        #content-screen .tip-card {
+            width: 90%;
+            margin-top: 70px;
+            height: calc(100% - 150px);
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(20, 50, 80, 0.7);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            position: relative;
+            transition: transform 0.5s, opacity 0.5s;
+            overflow: hidden;
+        }
+
+        #content-screen .tip-card.exit {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        #content-screen .tip-card.enter {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        #content-screen .timer-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        #content-screen .timer-container {
+            width: 100%;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #content-screen .timer {
+            height: 100%;
+            background-color: #00ff00;
+            width: 100%;
+            transition: width 5s linear, background-color 0.5s;
+        }
+
+        #content-screen .timer.ending {
+            background-color: #ff0000;
+        }
+
+        #content-screen .countdown {
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        #content-screen .countdown.hidden {
+            display: none;
+        }
+
+        /* ---- stage area: hook -> tip content -> why it works ---- */
+        #content-screen .stage-area {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        #content-screen .stage {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s, transform 0.5s;
+            pointer-events: none;
+        }
+
+        #content-screen .stage.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            z-index: 2;
+        }
+
+        /* ---- the "reveal" moment: content pops in with a golden flash after the hook countdown ---- */
+        #content-screen .stage.content-stage.reveal-pop {
+            animation: reveal-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #content-screen .stage.content-stage.reveal-pop .content-tag,
+        #content-screen .stage.content-stage.reveal-pop .compare-panel {
+            animation: reveal-glow 0.9s ease-out;
+        }
+
+        #content-screen .reveal-flash {
+            position: absolute;
+            inset: 0;
+            background-color: #fff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        #content-screen .reveal-flash.play {
+            animation: reveal-flash 0.4s ease-out;
+        }
+
+        #content-screen .stage-icon {
+            font-size: 2.4rem;
+            margin-bottom: 14px;
+        }
+
+        #content-screen .hook-text {
+            font-size: 1.55rem;
+            font-weight: bold;
+            line-height: 1.4;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            padding: 0 6px;
+        }
+
+        #content-screen .content-tag {
+            margin-bottom: 12px;
+        }
+
+        #content-screen .compare-row {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            min-height: 0;
+        }
+
+        #content-screen .compare-panel {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            padding: 10px;
+            overflow: hidden;
+            text-align: center;
+            transition: all 0.5s ease-in-out;
+        }
+
+        #content-screen .compare-panel.mistake,
+        #content-screen .compare-panel.approach {
+            /* Neutral by default — no color hints before the reveal.
+               Green/red only appear once spotlight/fade-out is applied. */
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(20, 50, 80, 0.75));
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        #content-screen .compare-label {
+            font-size: 0.95rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        #content-screen .compare-image {
+            width: 100%;
+            max-height: 45%;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+        }
+
+        #content-screen .compare-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.35;
+            text-shadow: 1px 1px 2px black;
+            padding: 0 4px;
+        }
+
+        #content-screen .compare-panel.spotlight {
+            width: 62%;
+            z-index: 2;
+            background: linear-gradient(160deg, rgba(46, 204, 113, 0.55), rgba(20, 50, 80, 0.75));
+            border-color: rgba(46, 204, 113, 0.7);
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.8);
+            animation: spotlight-pop 0.5s ease-out, reveal-glow 0.9s ease-out;
+        }
+
+        #content-screen .compare-panel.spotlight .compare-label {
+            color: #2ecc71;
+        }
+
+        #content-screen .compare-panel.fade-out {
+            width: 38%;
+            opacity: 0.55;
+            background: linear-gradient(160deg, rgba(180, 40, 40, 0.4), rgba(20, 50, 80, 0.75));
+            border-color: rgba(180, 40, 40, 0.5);
+        }
+
+        @keyframes spotlight-pop {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+
+        #content-screen .why-title {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            color: #ffcc00;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            letter-spacing: 1px;
+        }
+
+        #content-screen .why-text {
+            font-size: 1.25rem;
+            font-weight: bold;
+            line-height: 1.4;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            padding: 0 6px;
+            margin-bottom: 12px;
+        }
+
+        #content-screen .why-source {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
