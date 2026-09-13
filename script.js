@@ -430,7 +430,7 @@
         const DEFAULT_IMAGE_READ_TIME = 4500;
         const DEFAULT_WHY_READ_TIME = 8000;
 
-        const tips = [
+       const tips = [
             {
                 type: "interview",
                 title: "INTERVIEW TIP #1",
@@ -456,36 +456,31 @@
                     text: "\u201cI'm a hard worker and a team player.\u201d"
                 },
                 approach: {
-                    text: "\u201cWhen our project fell behind (Situation), I reorganised the schedule (Action) and we delivered 3 days early (Result).\u201d",
-                    image: "https://picsum.photos/seed/gamhub-interview-star/800/450",
-                    imageAlt: "Example of a STAR-method interview answer structure"
+                    text: "\u201cWhen our project fell behind (Situation), I reorganised the schedule (Action) and we delivered 3 days early (Result).\u201d"
                 },
                 whyItWorks: {
                     text: "The STAR method \u2014 Situation, Task, Action, Result \u2014 gives interviewers real evidence of your skills instead of a general claim.",
                     source: "University Career Services, STAR Method Guidance",
                     readTime: 9000
                 },
-                readTime: 5500,
-                imageReadTime: 4000
+                readTime: 6000
             },
             {
                 type: "interview",
                 title: "INTERVIEW TIP #3",
                 prompt: "Which answer to \u201cwhat's your weakness\u201d lands better?",
                 mistake: {
-                    image: "https://picsum.photos/seed/gamhub-interview-deflect/800/450",
-                    imageAlt: "A candidate deflecting the weakness question"
+                    text: "\u201cI can't really think of one \u2014 I guess I work too hard?\u201d"
                 },
                 approach: {
-                    image: "https://picsum.photos/seed/gamhub-interview-selfaware/800/450",
-                    imageAlt: "A candidate naming a real weakness alongside how they manage it"
+                    text: "\u201cI tend to over-explain in writing, so I've started drafting shorter and cutting it down.\u201d"
                 },
                 whyItWorks: {
                     text: "Interviewers use this question to gauge self-awareness \u2014 a specific weakness paired with a concrete fix reads as far more credible than a deflection.",
                     source: "Society for Human Resource Management (SHRM)",
                     readTime: 9000
                 },
-                imageReadTime: 4500
+                readTime: 5500
             },
             {
                 type: "interview",
@@ -495,17 +490,14 @@
                     text: "Blurting out a number the moment they ask."
                 },
                 approach: {
-                    text: "Asking for the budgeted range first, then negotiating within it.",
-                    image: "assets/images/interview-salary-example.jpg",
-                    imageAlt: "Example of asking for the budgeted salary range before negotiating"
+                    text: "Asking for the budgeted range first, then negotiating within it."
                 },
                 whyItWorks: {
                     text: "Job seekers who understand the market range before negotiating tend to secure stronger final offers.",
                     source: "Glassdoor Salary Research",
                     readTime: 8000
                 },
-                readTime: 6000,
-                imageReadTime: 4000
+                readTime: 6000
             }
         ];
 
