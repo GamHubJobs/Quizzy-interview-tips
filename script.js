@@ -430,19 +430,19 @@
         const DEFAULT_IMAGE_READ_TIME = 4500;
         const DEFAULT_WHY_READ_TIME = 8000;
 
-       const tips = [
+const tips = [
             {
                 type: "interview",
                 title: "INTERVIEW TIP #1",
-                prompt: "Which candidate gets remembered?",
+                prompt: "Which is the better way to answer, \"Tell me about yourself\"?",
                 mistake: {
-                    text: "Walking in without knowing what the company actually does."
+                    text: "Talking about your personal life and everything you've done since childhood."
                 },
                 approach: {
-                    text: "Knowing the company's mission, recent news, and the role inside out."
+                    text: "Briefly highlighting your relevant experience, skills, and why they fit the role."
                 },
                 whyItWorks: {
-                    text: "Candidates who can speak knowledgeably about a company are consistently rated more prepared and more hirable by recruiters.",
+                    text: "A focused introduction helps the interviewer quickly understand your relevant background and what you can bring to the role.",
                     source: "LinkedIn Talent Solutions",
                     readTime: 9000
                 },
@@ -451,16 +451,16 @@
             {
                 type: "interview",
                 title: "INTERVIEW TIP #2",
-                prompt: "Which answer actually proves your skill?",
+                prompt: "Which is the stronger answer to \"Why should we hire you?\"?",
                 mistake: {
-                    text: "\u201cI'm a hard worker and a team player.\u201d"
+                    text: "\"Because I really need this job and I'll work very hard.\""
                 },
                 approach: {
-                    text: "\u201cWhen our project fell behind (Situation), I reorganised the schedule (Action) and we delivered 3 days early (Result).\u201d"
+                    text: "\"My experience in customer service and problem-solving matches the requirements of this role, and I can contribute from day one.\""
                 },
                 whyItWorks: {
-                    text: "The STAR method \u2014 Situation, Task, Action, Result \u2014 gives interviewers real evidence of your skills instead of a general claim.",
-                    source: "University Career Services, STAR Method Guidance",
+                    text: "A strong answer connects your skills and experience directly to what the employer needs instead of focusing only on how much you want the job.",
+                    source: "University Career Services, Interview Guidance",
                     readTime: 9000
                 },
                 readTime: 6000
@@ -468,15 +468,15 @@
             {
                 type: "interview",
                 title: "INTERVIEW TIP #3",
-                prompt: "Which answer to \u201cwhat's your weakness\u201d lands better?",
+                prompt: "Which is the better way to answer \"What's your weakness?\"?",
                 mistake: {
-                    text: "\u201cI can't really think of one \u2014 I guess I work too hard?\u201d"
+                    text: "\"I don't really have any weaknesses. I'm good at everything I do.\""
                 },
                 approach: {
-                    text: "\u201cI tend to over-explain in writing, so I've started drafting shorter and cutting it down.\u201d"
+                    text: "\"I sometimes spend too much time perfecting my work, so I've started setting clear time limits to stay efficient.\""
                 },
                 whyItWorks: {
-                    text: "Interviewers use this question to gauge self-awareness \u2014 a specific weakness paired with a concrete fix reads as far more credible than a deflection.",
+                    text: "A specific weakness paired with a genuine improvement strategy demonstrates self-awareness and a willingness to grow.",
                     source: "Society for Human Resource Management (SHRM)",
                     readTime: 9000
                 },
@@ -485,21 +485,22 @@
             {
                 type: "interview",
                 title: "INTERVIEW TIP #4",
-                prompt: "Who gets the better offer?",
+                prompt: "What is the better approach when asked about your salary expectations?",
                 mistake: {
-                    text: "Blurting out a number the moment they ask."
+                    text: "Immediately giving a random salary number without knowing the typical range for the position."
                 },
                 approach: {
-                    text: "Asking for the budgeted range first, then negotiating within it."
+                    text: "Researching the market and asking about the employer's budgeted salary range before discussing a specific figure."
                 },
                 whyItWorks: {
-                    text: "Job seekers who understand the market range before negotiating tend to secure stronger final offers.",
+                    text: "Understanding the market and the employer's range gives you better information when discussing compensation and helps you negotiate more confidently.",
                     source: "Glassdoor Salary Research",
                     readTime: 8000
                 },
                 readTime: 6000
             }
         ];
+
 
         let currentTipIndex = 0;
         let stageTimeout;
