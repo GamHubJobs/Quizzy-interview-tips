@@ -425,10 +425,42 @@
            handled gracefully. `type: "interview"` is kept on each entry so
            a future "cv" series can be swapped back in without restructuring
            this array. */
-        const DEFAULT_HOOK_READ_TIME = 3000;
         const DEFAULT_TEXT_READ_TIME = 4500;
         const DEFAULT_IMAGE_READ_TIME = 4500;
         const DEFAULT_WHY_READ_TIME = 8000;
+
+        /* ============ PROMPT READ-TIME ESTIMATION ============ */
+        /* The hook screen shows a tip's `prompt` text while (per the CapCut
+           edit) an AI voiceover reads that same text aloud. This works out
+           how long that screen should stay up so it comfortably covers
+           BOTH the full narration AND a viewer reading along, plus a small
+           buffer so the transition to the next screen never feels rushed.
+
+           Duration scales with word count (longer prompt = proportionally
+           more voiceover time), so it is reusable for any future prompt:
+           just write `prompt` text and leave `hookReadTime` unset on the
+           tip and it will be timed automatically. To hand-override a
+           specific tip (e.g. a prompt with unusually dense wording), set
+           `hookReadTime` (ms) directly on that tip object — it always
+           takes priority over the estimate. Tune the constants below if
+           the voiceover pace or desired buffer changes. */
+        const VOICEOVER_WORDS_PER_MINUTE = 150;   // natural, clearly-articulated TTS pace
+        const VOICEOVER_MS_PER_WORD = 60000 / VOICEOVER_WORDS_PER_MINUTE;
+        const READING_COMPREHENSION_BUFFER_MS = 600; // cushion for reading while listening
+        const TRANSITION_BREATHING_ROOM_MS = 700;    // pause after narration ends, before it cuts away
+        const MIN_PROMPT_READ_TIME_MS = 3500;        // floor so even a very short prompt doesn't flash by
+        const READ_TIME_ROUNDING_MS = 100;           // round up to a clean value for the timer/countdown
+
+        function estimatePromptReadTime(text) {
+            if (!text) return MIN_PROMPT_READ_TIME_MS;
+
+            const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+            const voiceoverDurationMs = wordCount * VOICEOVER_MS_PER_WORD;
+            const total = voiceoverDurationMs + READING_COMPREHENSION_BUFFER_MS + TRANSITION_BREATHING_ROOM_MS;
+            const rounded = Math.ceil(total / READ_TIME_ROUNDING_MS) * READ_TIME_ROUNDING_MS;
+
+            return Math.max(rounded, MIN_PROMPT_READ_TIME_MS);
+        }
 
 const tips = [
             {
@@ -631,7 +663,7 @@ const tips = [
         function runHookStage(tip) {
             setActiveStage('hook');
             AudioManager.playSwoosh('reveal', { startFreq: 1700, endFreq: 450, duration: 0.3, volume: 0.22 });
-            const duration = tip.hookReadTime || DEFAULT_HOOK_READ_TIME;
+            const duration = tip.hookReadTime || estimatePromptReadTime(tip.prompt);
             startTimerBar(duration, () => runContentStage(tip));
         }
 
